@@ -1,5 +1,5 @@
 import { toDate } from 'date-fns-tz';
-import { parseToUTCDate, formatIsoUTCDateStringAsHTimeDateString, formatHTimeDateStringAsIsoUTCDateString, isIsoUTCDateString, isHTimeDateString } from '../../src/Core/Parser';
+import { parseToUTCDate, formatIsoUTCDateStringAsHTimeDateString, formatHTimeDateStringAsIsoUTCDateString, isIsoUTCDateString, isHTimeDateString } from '../src/Parser';
 
 const correct = [
   // iso | htime | full iso

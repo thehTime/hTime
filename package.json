@@ -2,7 +2,7 @@
   "name": "htime",
   "version": "0.0.1",
   "packageManager": "yarn@3.2.4",
-  "main": "dist/index.js",
+  "main": "dist/Api.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/thehTime/hTime.git"

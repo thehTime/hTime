@@ -1,13 +1,16 @@
 {
   "name": "htime",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "packageManager": "yarn@3.2.4",
-  "main": "dist/index.js",
+  "main": "dist/Api.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thehTime/hTime.git"
+  },
   "scripts": {
     "dev": "tsc -w",
     "build": "NODE_ENV=production tsc",
-    "test": "jest --runInBand",
-    "postinstall": "NODE_ENV=production tsc"
+    "test": "jest --runInBand"
   },
   "peerDependencies": {
     "date-fns": ">=2.29.3",

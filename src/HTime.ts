@@ -13,7 +13,7 @@ interface DateTime<H> {
   readonly milliseconds: Readonly<number>;
 }
 
-export interface HTImeInstanceOptions {
+export interface HTimeInstanceOptions {
   dateString?: string;
   timeZone?: string;
 }
@@ -55,7 +55,7 @@ export function getLocalDateFromUTCDate(UTCDate: Date, timeZoneOffset: number): 
   return addMinutes(UTCDate, timeZoneOffset);
 }
 
-export function createHTime(options?: HTImeInstanceOptions): HTime {
+export function createHTime(options?: HTimeInstanceOptions): HTime {
   const { dateString, timeZone } = options || {};
   const UTCDate = dateString ? parseToUTCDate(dateString) : new Date;
   const timeZoneName = timeZone || formatOffsetAsIsoString(getOffsetInMinutesFromSystemDate(UTCDate));
@@ -82,5 +82,3 @@ export function createHTime(options?: HTImeInstanceOptions): HTime {
     },
   });
 }
-
-

@@ -1,4 +1,4 @@
-import { getGlobalHourFromUTCHour, getUTCHourFromGlobalHour, getGlobalHours } from '../../src/Core/GlobalHour';
+import { getGlobalHourFromUTCHour, getUTCHourFromGlobalHour, getGlobalHours } from '../src/GlobalHour';
 
 describe('getGlobalHourFromUTCHour()', () => {
   test('return correct global hour', () => {

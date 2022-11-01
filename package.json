@@ -11,7 +11,7 @@
     "dev": "tsc -w",
     "build": "NODE_ENV=production tsc",
     "test": "jest --runInBand",
-    "prepare": "NODE_ENV=production tsc"
+    "postinstall": "NODE_ENV=production tsc"
   },
   "peerDependencies": {
     "date-fns": ">=2.29.3",

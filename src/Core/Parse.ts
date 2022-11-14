@@ -1,5 +1,5 @@
 import { toDate } from 'date-fns-tz';
-import { getGlobalHourFromUTCHour, getUTCHourFromGlobalHour, GlobalHour } from './GlobalHour';
+import { getGlobalHourFromUTCHour, getUTCHourFromGlobalHour, GlobalHour } from '@/Core/GlobalHour';
 
 /**
  * 2022-10-10T12:34Z

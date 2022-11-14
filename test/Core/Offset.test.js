@@ -1,5 +1,5 @@
 import { toDate } from 'date-fns-tz';
-import { getJustHoursOffset, getJustMinutesOffset, getOffsetInMinutes, formatOffsetAsIsoString, getOffsetInMinutesFromSystemDate } from '../src/Offset';
+import { getJustHoursOffset, getJustMinutesOffset, getOffsetInMinutes, formatOffsetAsIsoString, getOffsetInMinutesFromSystemDate } from '@/Core/Offset';
 
 describe('getOffsetInMinutes()', () => {
   const UTCDate = toDate('2022-10-10T012:34:56Z');

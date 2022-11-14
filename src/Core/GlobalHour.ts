@@ -1,4 +1,4 @@
-import { getJustHoursOffset } from './Offset';
+import { getJustHoursOffset } from '@/Core/Offset';
 
 const GLOBAL_HOURS = [
   'A',

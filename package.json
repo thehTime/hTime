@@ -1,6 +1,6 @@
 {
   "name": "htime",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "packageManager": "yarn@3.2.4",
   "main": "dist/Api.js",
   "repository": {
@@ -14,8 +14,7 @@
   },
   "peerDependencies": {
     "date-fns": ">=2.29.3",
-    "date-fns-tz": ">=1.3.7",
-    "typescript": ">=4.8.4"
+    "date-fns-tz": ">=1.3.7"
   },
   "devDependencies": {
     "@babel/core": "~7.19.3",

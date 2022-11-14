@@ -21,6 +21,9 @@
     "isolatedModules": true,
     "declaration": true,
     "removeComments": true,
+    "paths": {
+      "@/*": ["*"]
+    }
   },
   "include": [
     "src/**/*",

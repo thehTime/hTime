@@ -1,16 +1,16 @@
 import { addMinutes } from 'date-fns';
-import { GlobalHour, getGlobalHourFromUTCHour } from './GlobalHour';
-import { formatOffsetAsIsoString, getOffsetInMinutesFromSystemDate, getOffsetInMinutes } from './Offset';
-import { formatIsoUTCDateStringAsHTimeDateString, parseToUTCDate } from './Parser';
+import { GlobalHour, getGlobalHourFromUTCHour } from '@/Core/GlobalHour';
+import { formatOffsetAsIsoString, getOffsetInMinutesFromSystemDate, getOffsetInMinutes } from '@/Core/Offset';
+import { formatIsoUTCDateStringAsHTimeDateString, parseToUTCDate } from '@/Core/Parse';
 
-interface DateTime<H> {
-  readonly year: Readonly<number>;
-  readonly month: Readonly<number>;
-  readonly day: Readonly<number>;
-  readonly hours: Readonly<H>;
-  readonly minutes: Readonly<number>;
-  readonly seconds: Readonly<number>;
-  readonly milliseconds: Readonly<number>;
+interface DateTime<H = number> {
+  readonly year: number;
+  readonly month: number;
+  readonly day: number;
+  readonly hours: H;
+  readonly minutes: number;
+  readonly seconds: number;
+  readonly milliseconds: number;
 }
 
 export interface HTimeInstanceOptions {
@@ -19,20 +19,21 @@ export interface HTimeInstanceOptions {
 }
 
 export interface HTime {
-  readonly utc: Readonly<DateTime<number>>;
-  readonly local: Readonly<DateTime<number>>;
+  readonly utc: Readonly<DateTime>;
+  readonly local: Readonly<DateTime>;
   readonly global: Readonly<DateTime<GlobalHour>>;
+  readonly epochMilliseconds: number;
   readonly timeZone: {
-    name: Readonly<string>;
-    offset: Readonly<number>;
+    readonly name: string;
+    readonly offset: number;
   };
   readonly dateString: {
-    UTCIso: Readonly<string>;
-    hTime: Readonly<string>;
+    readonly UTCIso: string;
+    readonly hTime: string;
   };
 }
 
-function createDateTime(date: Date): Readonly<DateTime<number>> {
+function createDateTime(date: Date): Readonly<DateTime> {
   return Object.freeze({
     year: date.getUTCFullYear(),
     month: date.getUTCMonth() + 1,
@@ -66,6 +67,8 @@ export function createHTime(options?: HTimeInstanceOptions): HTime {
     utc: createDateTime(UTCDate),
     local: createDateTime(localDate),
     global: createGlobalDateTime(UTCDate),
+
+    epochMilliseconds: UTCDate.valueOf(),
 
     timeZone: {
       name: timeZoneName,

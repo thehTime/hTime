@@ -1,7 +1,7 @@
-import { getGlobalHourFromUTCHour } from '../src/GlobalHour';
-import { createHTime, getLocalDateFromUTCDate } from '../src/HTime';
-import { getOffsetInMinutesFromSystemDate } from '../src/Offset';
-import { parseToUTCDate } from '../src/Parser';
+import { getGlobalHourFromUTCHour } from '@/Core/GlobalHour';
+import { createHTime, getLocalDateFromUTCDate } from '@/Core/HTime';
+import { getOffsetInMinutesFromSystemDate } from '@/Core/Offset';
+import { parseToUTCDate } from '@/Core/Parse';
 
 function compareHTimeDateTimeToDate(htimeDateTime, date, expectedHour) {
   expect(htimeDateTime.year).toEqual(date.getUTCFullYear());

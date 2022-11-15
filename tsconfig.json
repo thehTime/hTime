@@ -1,21 +1,21 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
-    "outDir": "dist",
-    "target": "es2015",
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true,
+    "allowJs": false,
     "noImplicitAny": true,
     "esModuleInterop": true,
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "CommonJS",
+    "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,

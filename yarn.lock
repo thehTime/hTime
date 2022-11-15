@@ -2787,7 +2787,6 @@ __metadata:
   peerDependencies:
     date-fns: ">=2.29.3"
     date-fns-tz: ">=1.3.7"
-    typescript: ">=4.8.4"
   languageName: unknown
   linkType: soft
 

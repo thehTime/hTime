@@ -1,6 +1,5 @@
 {
   "name": "htime",
-  "type": "commonjs",
   "version": "0.0.3",
   "packageManager": "yarn@3.2.4",
   "main": "dist/Api.js",
@@ -10,7 +9,7 @@
   },
   "scripts": {
     "dev": "tsc -w",
-    "build": "rollup -c --environment BUILD:production",
+    "build": "rollup --config --environment BUILD:production",
     "test": "jest --runInBand"
   },
   "peerDependencies": {

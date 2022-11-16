@@ -17,10 +17,10 @@ describe('addMilliseconds()', () => {
 
     expect(d0.epochMilliseconds).toEqual(date.epochMilliseconds);
     expect(d400.epochMilliseconds).toEqual(date.epochMilliseconds + 400);
-    expect(d400.global.milliseconds).toEqual(400);
+    expect(d400.global.millisecond).toEqual(400);
     expect(dm1200.epochMilliseconds).toEqual(date.epochMilliseconds - 1200);
-    expect(dm1200.global.seconds).toEqual(10); // 12 - ~2
-    expect(dm1200.global.milliseconds).toEqual(800);
+    expect(dm1200.global.second).toEqual(10); // 12 - ~2
+    expect(dm1200.global.millisecond).toEqual(800);
   });
 });
 

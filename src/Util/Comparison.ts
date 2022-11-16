@@ -4,10 +4,10 @@ const COMPARISON_ACCURACY = [
   'year',
   'month',
   'day',
-  'hours',
-  'minutes',
-  'seconds',
-  'milliseconds',
+  'hour',
+  'minute',
+  'second',
+  'millisecond',
 ] as const;
 
 type ComparisonAccuracy = typeof COMPARISON_ACCURACY[number];
@@ -28,8 +28,8 @@ export function isFuture(date: HTime): boolean {
   return isAfter(date, createHTime());
 }
 
-export function isSame(date: HTime, comparison: HTime, accuracy: ComparisonAccuracy = 'milliseconds'): boolean {
-  if (accuracy === 'milliseconds') {
+export function isSame(date: HTime, comparison: HTime, accuracy: ComparisonAccuracy = 'millisecond'): boolean {
+  if (accuracy === 'millisecond') {
     return date.epochMilliseconds === comparison.epochMilliseconds;
   }
 

@@ -1,6 +1,5 @@
 'use strict';
 
-var dateFns = require('date-fns');
 var dateFnsTz = require('date-fns-tz');
 
 /******************************************************************************
@@ -37,6 +36,27 @@ function __spreadArray(to, from, pack) {
         }
     }
     return to.concat(ar || Array.prototype.slice.call(from));
+}
+
+var MILLISECONDS_IN_SECOND = 1000;
+var SECONDS_IN_MINUTE = 60;
+var MINUTES_IN_HOUR = 60;
+var HOURS_IN_DAY = 24;
+var DAYS_IN_WEEK = 7;
+function fromSecondsToMilliseconds(seconds) {
+    return seconds * MILLISECONDS_IN_SECOND;
+}
+function fromMinutesToMilliseconds(minutes) {
+    return fromSecondsToMilliseconds(minutes * SECONDS_IN_MINUTE);
+}
+function fromHoursToMilliseconds(hours) {
+    return fromMinutesToMilliseconds(hours * MINUTES_IN_HOUR);
+}
+function fromDaysToMilliseconds(days) {
+    return fromHoursToMilliseconds(days * HOURS_IN_DAY);
+}
+function fromWeeksToMilliseconds(weeks) {
+    return fromDaysToMilliseconds(weeks * DAYS_IN_WEEK);
 }
 
 function getOffsetInMinutes(timeZoneName, UTCDate) {
@@ -145,17 +165,17 @@ function createDateTime(date) {
         year: date.getUTCFullYear(),
         month: date.getUTCMonth() + 1,
         day: date.getUTCDate(),
-        hours: date.getUTCHours(),
-        minutes: date.getUTCMinutes(),
-        seconds: date.getUTCSeconds(),
-        milliseconds: date.getUTCMilliseconds(),
+        hour: date.getUTCHours(),
+        minute: date.getUTCMinutes(),
+        second: date.getUTCSeconds(),
+        millisecond: date.getUTCMilliseconds(),
     });
 }
 function createGlobalDateTime(date) {
-    return Object.freeze(__assign(__assign({}, createDateTime(date)), { hours: getGlobalHourFromUTCHour(date.getUTCHours()) }));
+    return Object.freeze(__assign(__assign({}, createDateTime(date)), { hour: getGlobalHourFromUTCHour(date.getUTCHours()) }));
 }
 function getLocalDateFromUTCDate(UTCDate, timeZoneOffset) {
-    return dateFns.addMinutes(UTCDate, timeZoneOffset);
+    return new Date(UTCDate.valueOf() + fromMinutesToMilliseconds(timeZoneOffset));
 }
 function createHTime(options) {
     var _a = options || {}, dateString = _a.dateString, timeZone = _a.timeZone;
@@ -190,10 +210,10 @@ var COMPARISON_ACCURACY = [
     'year',
     'month',
     'day',
-    'hours',
-    'minutes',
-    'seconds',
-    'milliseconds',
+    'hour',
+    'minute',
+    'second',
+    'millisecond',
 ];
 function isBefore(date, comparison) {
     return date.epochMilliseconds < comparison.epochMilliseconds;
@@ -208,33 +228,12 @@ function isFuture(date) {
     return isAfter(date, createHTime());
 }
 function isSame(date, comparison, accuracy) {
-    if (accuracy === void 0) { accuracy = 'milliseconds'; }
-    if (accuracy === 'milliseconds') {
+    if (accuracy === void 0) { accuracy = 'millisecond'; }
+    if (accuracy === 'millisecond') {
         return date.epochMilliseconds === comparison.epochMilliseconds;
     }
     var props = COMPARISON_ACCURACY.slice(0, COMPARISON_ACCURACY.indexOf(accuracy));
     return props.every(function (prop) { return date.global[prop] === comparison.global[prop]; });
-}
-
-var MILLISECONDS_IN_SECOND = 1000;
-var SECONDS_IN_MINUTE = 60;
-var MINUTES_IN_HOUR = 60;
-var HOURS_IN_DAY = 24;
-var DAYS_IN_WEEK = 7;
-function fromSecondsToMilliseconds(seconds) {
-    return seconds * MILLISECONDS_IN_SECOND;
-}
-function fromMinutesToMilliseconds(minutes) {
-    return fromSecondsToMilliseconds(minutes * SECONDS_IN_MINUTE);
-}
-function fromHoursToMilliseconds(hours) {
-    return fromMinutesToMilliseconds(hours * MINUTES_IN_HOUR);
-}
-function fromDaysToMilliseconds(days) {
-    return fromHoursToMilliseconds(days * HOURS_IN_DAY);
-}
-function fromWeeksToMilliseconds(weeks) {
-    return fromDaysToMilliseconds(weeks * DAYS_IN_WEEK);
 }
 
 function addMilliseconds(date, milliseconds) {
@@ -277,5 +276,4 @@ exports.isHTimeDateString = isHTimeDateString;
 exports.isIsoUTCDateString = isIsoUTCDateString;
 exports.isPast = isPast;
 exports.isSame = isSame;
-exports.parseToUTCDate = parseToUTCDate;
 //# sourceMappingURL=Api.js.map

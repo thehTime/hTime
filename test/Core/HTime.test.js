@@ -7,10 +7,10 @@ function compareHTimeDateTimeToDate(htimeDateTime, date, expectedHour) {
   expect(htimeDateTime.year).toEqual(date.getUTCFullYear());
   expect(htimeDateTime.month).toEqual(date.getUTCMonth() + 1);
   expect(htimeDateTime.day).toEqual(date.getUTCDate());
-  expect(htimeDateTime.hours).toEqual(expectedHour || date.getUTCHours());
-  expect(htimeDateTime.minutes).toEqual(date.getUTCMinutes());
-  expect(htimeDateTime.seconds).toEqual(date.getUTCSeconds());
-  expect(htimeDateTime.milliseconds).toEqual(date.getUTCMilliseconds());
+  expect(htimeDateTime.hour).toEqual(expectedHour || date.getUTCHours());
+  expect(htimeDateTime.minute).toEqual(date.getUTCMinutes());
+  expect(htimeDateTime.second).toEqual(date.getUTCSeconds());
+  expect(htimeDateTime.millisecond).toEqual(date.getUTCMilliseconds());
 }
 
 describe('createHTime()', () => {
@@ -62,9 +62,9 @@ describe('createHTime()', () => {
       compareHTimeDateTimeToDate(htime.utc, date);
       compareHTimeDateTimeToDate(htime.local, localDate);
       compareHTimeDateTimeToDate(htime.global, date, getGlobalHourFromUTCHour(date.getUTCHours()));
-      expect(htime.utc.hours).toEqual(12);
-      expect(htime.local.hours).toEqual(5);
-      expect(htime.global.hours).toEqual('N');
+      expect(htime.utc.hour).toEqual(12);
+      expect(htime.local.hour).toEqual(5);
+      expect(htime.global.hour).toEqual('N');
     });
   });
 });

@@ -1,4 +1,4 @@
-import { addMinutes } from 'date-fns';
+import { fromMinutesToMilliseconds } from './Conversion';
 import { GlobalHour, getGlobalHourFromUTCHour } from './GlobalHour';
 import { formatOffsetAsIsoString, getOffsetInMinutesFromSystemDate, getOffsetInMinutes } from './Offset';
 import { formatIsoUTCDateStringAsHTimeDateString, parseToUTCDate } from './Parse';
@@ -7,10 +7,10 @@ interface DateTime<H = number> {
   readonly year: number;
   readonly month: number;
   readonly day: number;
-  readonly hours: H;
-  readonly minutes: number;
-  readonly seconds: number;
-  readonly milliseconds: number;
+  readonly hour: H;
+  readonly minute: number;
+  readonly second: number;
+  readonly millisecond: number;
 }
 
 export interface HTimeInstanceOptions {
@@ -38,22 +38,22 @@ function createDateTime(date: Date): Readonly<DateTime> {
     year: date.getUTCFullYear(),
     month: date.getUTCMonth() + 1,
     day: date.getUTCDate(),
-    hours: date.getUTCHours(),
-    minutes: date.getUTCMinutes(),
-    seconds: date.getUTCSeconds(),
-    milliseconds: date.getUTCMilliseconds(),
+    hour: date.getUTCHours(),
+    minute: date.getUTCMinutes(),
+    second: date.getUTCSeconds(),
+    millisecond: date.getUTCMilliseconds(),
   })
 }
 
 function createGlobalDateTime(date: Date): Readonly<DateTime<GlobalHour>> {
   return Object.freeze({
     ...createDateTime(date),
-    hours: getGlobalHourFromUTCHour(date.getUTCHours()),
+    hour: getGlobalHourFromUTCHour(date.getUTCHours()),
   })
 }
 
 export function getLocalDateFromUTCDate(UTCDate: Date, timeZoneOffset: number): Date {
-  return addMinutes(UTCDate, timeZoneOffset);
+  return new Date(UTCDate.valueOf() + fromMinutesToMilliseconds(timeZoneOffset));
 }
 
 export function createHTime(options?: HTimeInstanceOptions): HTime {

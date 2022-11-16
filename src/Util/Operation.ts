@@ -1,5 +1,5 @@
 import { createHTime, HTime } from '../Core/HTime';
-import { fromDaysToMilliseconds, fromHoursToMilliseconds, fromMinutesToMilliseconds, fromSecondsToMilliseconds, fromWeeksToMilliseconds } from '../Util/Conversion';
+import { fromDaysToMilliseconds, fromHoursToMilliseconds, fromMinutesToMilliseconds, fromSecondsToMilliseconds, fromWeeksToMilliseconds } from '../Core/Conversion';
 
 export function addMilliseconds(date: HTime, milliseconds: number): HTime {
   if (milliseconds === 0) {

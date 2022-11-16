@@ -3,10 +3,10 @@ interface DateTime<H = number> {
     readonly year: number;
     readonly month: number;
     readonly day: number;
-    readonly hours: H;
-    readonly minutes: number;
-    readonly seconds: number;
-    readonly milliseconds: number;
+    readonly hour: H;
+    readonly minute: number;
+    readonly second: number;
+    readonly millisecond: number;
 }
 export interface HTimeInstanceOptions {
     dateString?: string;

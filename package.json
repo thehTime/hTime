@@ -1,6 +1,6 @@
 {
   "name": "htime",
-  "type": "module",
+  "type": "commonjs",
   "version": "0.0.3",
   "packageManager": "yarn@3.2.4",
   "main": "dist/Api.js",

@@ -182,7 +182,7 @@ function createHTime(options) {
     });
 }
 
-function createLocalClock(hTime) {
+function createClock(hTime) {
     return getGlobalHours(hTime.timeZone.offset);
 }
 
@@ -268,8 +268,8 @@ exports.addMilliseconds = addMilliseconds;
 exports.addMinutes = addMinutes;
 exports.addSeconds = addSeconds;
 exports.addWeeks = addWeeks;
+exports.createClock = createClock;
 exports.createHTime = createHTime;
-exports.createLocalClock = createLocalClock;
 exports.isAfter = isAfter;
 exports.isBefore = isBefore;
 exports.isFuture = isFuture;

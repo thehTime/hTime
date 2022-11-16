@@ -1,5 +1,5 @@
-import { addMilliseconds, addDays } from '@/Util/Operation';
-import { createHTime } from '@/Core/HTime';
+import { addMilliseconds, addDays } from 'src/Util/Operation';
+import { createHTime } from 'src/Core/HTime';
 
 let date;
 

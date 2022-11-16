@@ -1,5 +1,5 @@
-import { isBefore, isPast, isAfter, isFuture, isSame } from '@/Util/Comparison';
-import { createHTime } from '@/Core/HTime';
+import { isBefore, isPast, isAfter, isFuture, isSame } from 'src/Util/Comparison';
+import { createHTime } from 'src/Core/HTime';
 
 let before, after, now;
 

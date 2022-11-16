@@ -1,4 +1,4 @@
-import { GlobalHour } from '@/Core/GlobalHour';
+import { GlobalHour } from './GlobalHour';
 interface DateTime<H = number> {
     readonly year: number;
     readonly month: number;

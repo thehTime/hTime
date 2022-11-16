@@ -1,7 +1,7 @@
 import { addMinutes } from 'date-fns';
-import { GlobalHour, getGlobalHourFromUTCHour } from '@/Core/GlobalHour';
-import { formatOffsetAsIsoString, getOffsetInMinutesFromSystemDate, getOffsetInMinutes } from '@/Core/Offset';
-import { formatIsoUTCDateStringAsHTimeDateString, parseToUTCDate } from '@/Core/Parse';
+import { GlobalHour, getGlobalHourFromUTCHour } from './GlobalHour';
+import { formatOffsetAsIsoString, getOffsetInMinutesFromSystemDate, getOffsetInMinutes } from './Offset';
+import { formatIsoUTCDateStringAsHTimeDateString, parseToUTCDate } from './Parse';
 
 interface DateTime<H = number> {
   readonly year: number;

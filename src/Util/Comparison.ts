@@ -1,4 +1,4 @@
-import { createHTime, HTime } from '@/Core/HTime';
+import { createHTime, HTime } from '../Core/HTime';
 
 const COMPARISON_ACCURACY = [
   'year',

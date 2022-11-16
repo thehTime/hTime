@@ -5,7 +5,7 @@ module.exports = {
     '<rootDir>/test/',
   ],
   moduleNameMapper: {
-    '@/(.*)': [
+    'src/(.*)': [
       '<rootDir>/src/$1',
     ],
   },

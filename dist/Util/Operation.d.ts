@@ -1,4 +1,4 @@
-import { HTime } from '@/Core/HTime';
+import { HTime } from '../Core/HTime';
 export declare function addMilliseconds(date: HTime, milliseconds: number): HTime;
 export declare function addSeconds(date: HTime, seconds: number): HTime;
 export declare function addMinutes(date: HTime, minutes: number): HTime;

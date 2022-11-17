@@ -31,3 +31,27 @@ export function addDays(date: HTime, days: number): HTime {
 export function addWeeks(date: HTime, weeks: number): HTime {
   return addMilliseconds(date, fromWeeksToMilliseconds(weeks));
 }
+
+export function subMilliseconds(date: HTime, milliseconds: number): HTime {
+  return addMilliseconds(date, -milliseconds);
+}
+
+export function subSeconds(date: HTime, seconds: number): HTime {
+  return addSeconds(date, -seconds);
+}
+
+export function subMinutes(date: HTime, minutes: number): HTime {
+  return addMinutes(date, -minutes);
+}
+
+export function subHours(date: HTime, hours: number): HTime {
+  return addHours(date, -hours);
+}
+
+export function subDays(date: HTime, days: number): HTime {
+  return addDays(date, -days);
+}
+
+export function subWeeks(date: HTime, weeks: number): HTime {
+  return addWeeks(date, -weeks);
+}

@@ -38,11 +38,23 @@ function __spreadArray(to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 }
 
+function divide(dividend, divisor) {
+    return dividend / divisor;
+}
+function divideAndFloor(dividend, divisor) {
+    var quotient = divide(dividend, divisor);
+    return quotient < 0 ? Math.ceil(quotient) : Math.floor(quotient);
+}
+function divideRemainder(dividend, divisor) {
+    return dividend % divisor;
+}
+
 var MILLISECONDS_IN_SECOND = 1000;
 var SECONDS_IN_MINUTE = 60;
 var MINUTES_IN_HOUR = 60;
 var HOURS_IN_DAY = 24;
 var DAYS_IN_WEEK = 7;
+var MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE;
 function fromSecondsToMilliseconds(seconds) {
     return seconds * MILLISECONDS_IN_SECOND;
 }
@@ -58,31 +70,17 @@ function fromDaysToMilliseconds(days) {
 function fromWeeksToMilliseconds(weeks) {
     return fromDaysToMilliseconds(weeks * DAYS_IN_WEEK);
 }
-
-function getOffsetInMinutes(timeZoneName, UTCDate) {
-    var offsetInMilliseconds = dateFnsTz.getTimezoneOffset(timeZoneName, UTCDate);
-    return offsetInMilliseconds / (60 * 1000);
-}
-function getOffsetInMinutesFromSystemDate(date) {
-    return 0 - date.getTimezoneOffset();
-}
-function getJustHoursOffset(offsetInMinutes) {
-    var hoursOffset = offsetInMinutes / 60;
-    return offsetInMinutes < 0 ? Math.ceil(hoursOffset) : Math.floor(hoursOffset);
-}
-function getJustMinutesOffset(offsetInMinutes) {
-    return offsetInMinutes % 60;
-}
-function formatOffsetAsIsoString(offsetInMinutes) {
-    var hoursOffset = Math.abs(getJustHoursOffset(offsetInMinutes));
-    var minutesOffset = Math.abs(getJustMinutesOffset(offsetInMinutes));
+function fromMillisecondsToMinutes(milliseconds) {
     return [
-        offsetInMinutes >= 0 ? '+' : '-',
-        hoursOffset < 10 ? '0' : '',
-        hoursOffset,
-        minutesOffset < 10 ? '0' : '',
-        minutesOffset,
-    ].join('');
+        divideAndFloor(milliseconds, MILLISECONDS_IN_MINUTE),
+        divideRemainder(milliseconds, MILLISECONDS_IN_MINUTE)
+    ];
+}
+function fromMinutesToHours(minutes) {
+    return [
+        divideAndFloor(minutes, MINUTES_IN_HOUR),
+        divideRemainder(minutes, MINUTES_IN_HOUR)
+    ];
 }
 
 var GLOBAL_HOURS = [
@@ -111,51 +109,68 @@ var GLOBAL_HOURS = [
     'Y',
     'Z',
 ];
-function getGlobalHourFromUTCHour(hour) {
+function getGlobalHourFromHour(hour) {
     return GLOBAL_HOURS[hour];
 }
-function getUTCHourFromGlobalHour(globalHour) {
+function getHourFromGlobalHour(globalHour) {
     return GLOBAL_HOURS.indexOf(globalHour);
 }
 function getGlobalHours(offsetInMinutes) {
     if (offsetInMinutes === void 0) { offsetInMinutes = 0; }
-    var hoursOffset = getJustHoursOffset(offsetInMinutes);
+    var hoursOffset = fromMinutesToHours(offsetInMinutes)[0];
     return __spreadArray(__spreadArray([], GLOBAL_HOURS.slice(-hoursOffset), true), GLOBAL_HOURS.slice(0, -hoursOffset), true);
 }
 
-var REGEX_DATE_ISO_UTC = /^([1-9][0-9]{0,3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9])(:([0-5][0-9])(\.[0-9]+)?)?Z$/;
-var REGEX_HOUR_ISO_UTC = /T([0-9]{2})/;
+function getOffsetInMinutes(timeZoneName, utcDate) {
+    return fromMillisecondsToMinutes(dateFnsTz.getTimezoneOffset(timeZoneName, utcDate))[0];
+}
+function getOffsetInMinutesFromSystemDate(date) {
+    return 0 - date.getTimezoneOffset();
+}
+function formatOffsetAsIsoString(offsetInMinutes) {
+    var _a = fromMinutesToHours(offsetInMinutes).map(Math.abs), hoursOffset = _a[0], minutesOffset = _a[1];
+    return [
+        offsetInMinutes >= 0 ? '+' : '-',
+        hoursOffset < 10 ? '0' : '',
+        hoursOffset,
+        minutesOffset < 10 ? '0' : '',
+        minutesOffset,
+    ].join('');
+}
+
+var REGEX_DATE_UTC_ISO = /^([1-9][0-9]{0,3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9])(:([0-5][0-9])(\.[0-9]+)?)?Z$/;
+var REGEX_HOUR_UTC_ISO = /T([0-9]{2})/;
 var REGEX_DATE_HTIME = /^([1-9][0-9]{0,3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T[abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ]:([0-5][0-9])(:([0-5][0-9])(\.[0-9]+)?)?H$/;
 var REGEX_HOUR_HTIME = /T([a-zA-Z]{1})/;
-function isIsoUTCDateString(dateString) {
-    return REGEX_DATE_ISO_UTC.test(dateString);
+function isUtcIsoDateString(dateString) {
+    return REGEX_DATE_UTC_ISO.test(dateString);
 }
 function isHTimeDateString(dateString) {
     return REGEX_DATE_HTIME.test(dateString);
 }
-function formatIsoUTCDateStringAsHTimeDateString(isoDateString) {
-    var match = (isoDateString.match(REGEX_HOUR_ISO_UTC) || [])[0];
+function formatUtcIsoDateStringAsHTimeDateString(utcDateString) {
+    var match = (utcDateString.match(REGEX_HOUR_UTC_ISO) || [])[0];
     var isoHour = match.slice(1);
-    var globalHour = getGlobalHourFromUTCHour(parseInt(isoHour));
-    var _a = isoDateString.split(match), day = _a[0], time = _a[1];
+    var globalHour = getGlobalHourFromHour(parseInt(isoHour));
+    var _a = utcDateString.split(match), day = _a[0], time = _a[1];
     var formattedTime = time.replace(/Z$/, 'H');
     return "".concat(day, "T").concat(globalHour).concat(formattedTime);
 }
-function formatHTimeDateStringAsIsoUTCDateString(hTimeDateString) {
+function formatHTimeDateStringAsUtcIsoDateString(hTimeDateString) {
     var match = (hTimeDateString.match(REGEX_HOUR_HTIME) || [])[0];
     var globalHour = match.charAt(1);
-    var localHour = getUTCHourFromGlobalHour(globalHour);
+    var localHour = getHourFromGlobalHour(globalHour);
     var _a = hTimeDateString.split(match), day = _a[0], time = _a[1];
     var formattedLocalHour = localHour < 10 ? "0".concat(localHour) : localHour;
     var formattedTime = time.replace(/H$/, 'Z');
     return "".concat(day, "T").concat(formattedLocalHour).concat(formattedTime);
 }
-function parseToUTCDate(dateString) {
-    if (isIsoUTCDateString(dateString)) {
-        return dateFnsTz.toDate(dateString);
+function parseToUtcDate(dateString) {
+    if (isUtcIsoDateString(dateString)) {
+        return new Date(dateString);
     }
     if (isHTimeDateString(dateString)) {
-        return parseToUTCDate(formatHTimeDateStringAsIsoUTCDateString(dateString));
+        return new Date(formatHTimeDateStringAsUtcIsoDateString(dateString));
     }
     throw new Error("\"".concat(dateString, "\" is an invalid date"));
 }
@@ -172,32 +187,32 @@ function createDateTime(date) {
     });
 }
 function createGlobalDateTime(date) {
-    return Object.freeze(__assign(__assign({}, createDateTime(date)), { hour: getGlobalHourFromUTCHour(date.getUTCHours()) }));
+    return Object.freeze(__assign(__assign({}, createDateTime(date)), { hour: getGlobalHourFromHour(date.getUTCHours()) }));
 }
-function getLocalDateFromUTCDate(UTCDate, timeZoneOffset) {
-    return new Date(UTCDate.valueOf() + fromMinutesToMilliseconds(timeZoneOffset));
+function getLocalDateFromUtcDate(utcDate, timeZoneOffset) {
+    return new Date(utcDate.valueOf() + fromMinutesToMilliseconds(timeZoneOffset));
 }
 function createHTime(options) {
     var _a = options || {}, dateString = _a.dateString, timeZone = _a.timeZone;
-    var UTCDate = dateString ? parseToUTCDate(dateString) : new Date;
-    var timeZoneName = timeZone || formatOffsetAsIsoString(getOffsetInMinutesFromSystemDate(UTCDate));
-    var timeZoneOffset = getOffsetInMinutes(timeZoneName, UTCDate);
-    var localDate = getLocalDateFromUTCDate(UTCDate, timeZoneOffset);
+    var utcDate = dateString ? parseToUtcDate(dateString) : new Date;
+    var timeZoneName = timeZone || formatOffsetAsIsoString(getOffsetInMinutesFromSystemDate(utcDate));
+    var timeZoneOffset = getOffsetInMinutes(timeZoneName, utcDate);
+    var localDate = getLocalDateFromUtcDate(utcDate, timeZoneOffset);
     return Object.freeze({
-        utc: createDateTime(UTCDate),
+        utc: createDateTime(utcDate),
         local: createDateTime(localDate),
-        global: createGlobalDateTime(UTCDate),
-        epochMilliseconds: UTCDate.valueOf(),
+        global: createGlobalDateTime(utcDate),
+        epochMilliseconds: utcDate.valueOf(),
         timeZone: {
             name: timeZoneName,
             offset: timeZoneOffset,
         },
         dateString: {
-            UTCIso: UTCDate.toISOString(),
-            hTime: formatIsoUTCDateStringAsHTimeDateString(UTCDate.toISOString()),
+            utcIso: utcDate.toISOString(),
+            hTime: formatUtcIsoDateStringAsHTimeDateString(utcDate.toISOString()),
         },
         toString: function () {
-            return UTCDate.toISOString();
+            return utcDate.toISOString();
         },
     });
 }
@@ -260,6 +275,24 @@ function addDays(date, days) {
 function addWeeks(date, weeks) {
     return addMilliseconds(date, fromWeeksToMilliseconds(weeks));
 }
+function subMilliseconds(date, milliseconds) {
+    return addMilliseconds(date, -milliseconds);
+}
+function subSeconds(date, seconds) {
+    return addSeconds(date, -seconds);
+}
+function subMinutes(date, minutes) {
+    return addMinutes(date, -minutes);
+}
+function subHours(date, hours) {
+    return addHours(date, -hours);
+}
+function subDays(date, days) {
+    return addDays(date, -days);
+}
+function subWeeks(date, weeks) {
+    return addWeeks(date, -weeks);
+}
 
 exports.addDays = addDays;
 exports.addHours = addHours;
@@ -273,7 +306,13 @@ exports.isAfter = isAfter;
 exports.isBefore = isBefore;
 exports.isFuture = isFuture;
 exports.isHTimeDateString = isHTimeDateString;
-exports.isIsoUTCDateString = isIsoUTCDateString;
 exports.isPast = isPast;
 exports.isSame = isSame;
+exports.isUtcIsoDateString = isUtcIsoDateString;
+exports.subDays = subDays;
+exports.subHours = subHours;
+exports.subMilliseconds = subMilliseconds;
+exports.subMinutes = subMinutes;
+exports.subSeconds = subSeconds;
+exports.subWeeks = subWeeks;
 //# sourceMappingURL=Api.js.map

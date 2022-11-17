@@ -1,16 +1,16 @@
-import { getGlobalHourFromUTCHour, getUTCHourFromGlobalHour, getGlobalHours } from 'src/Core/GlobalHour';
+import { getGlobalHourFromHour, getHourFromGlobalHour, getGlobalHours } from 'src/Core/GlobalHour';
 
-describe('getGlobalHourFromUTCHour()', () => {
+describe('getGlobalHourFromHour()', () => {
   test('return correct global hour', () => {
-    expect(getGlobalHourFromUTCHour(0)).toEqual('A');
-    expect(getGlobalHourFromUTCHour(23)).toEqual('Z');
+    expect(getGlobalHourFromHour(0)).toEqual('A');
+    expect(getGlobalHourFromHour(23)).toEqual('Z');
   });
 });
 
-describe('getUTCHourFromGlobalHour()', () => {
+describe('getHourFromGlobalHour()', () => {
   test('return correct hour', () => {
-    expect(getUTCHourFromGlobalHour('A')).toEqual(0);
-    expect(getUTCHourFromGlobalHour('Z')).toEqual(23);
+    expect(getHourFromGlobalHour('A')).toEqual(0);
+    expect(getHourFromGlobalHour('Z')).toEqual(23);
   });
 });
 

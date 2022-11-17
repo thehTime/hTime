@@ -1,5 +1,5 @@
-export declare function isIsoUTCDateString(dateString: string): boolean;
+export declare function isUtcIsoDateString(dateString: string): boolean;
 export declare function isHTimeDateString(dateString: string): boolean;
-export declare function formatIsoUTCDateStringAsHTimeDateString(isoDateString: string): string;
-export declare function formatHTimeDateStringAsIsoUTCDateString(hTimeDateString: string): string;
-export declare function parseToUTCDate(dateString: string): Date;
+export declare function formatUtcIsoDateStringAsHTimeDateString(utcDateString: string): string;
+export declare function formatHTimeDateStringAsUtcIsoDateString(hTimeDateString: string): string;
+export declare function parseToUtcDate(dateString: string): Date;

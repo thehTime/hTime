@@ -1,5 +1,5 @@
 import { toDate } from 'date-fns-tz';
-import { parseToUTCDate, formatIsoUTCDateStringAsHTimeDateString, formatHTimeDateStringAsIsoUTCDateString, isIsoUTCDateString, isHTimeDateString } from 'src/Core/Parse';
+import { parseToUtcDate, formatUtcIsoDateStringAsHTimeDateString, formatHTimeDateStringAsUtcIsoDateString, isUtcIsoDateString, isHTimeDateString } from 'src/Core/Parse';
 
 const correct = [
   // iso | htime | full iso
@@ -17,18 +17,19 @@ const incorrect = [
   '2022-12-10TA:34Z',
   '2022-12-10T12:34H',
   '2022-12-10T25:34Z',
+  '2022-10-10T012:12:12.000Z',
 ];
 
-describe('isIsoUTCDateString()', () => {
+describe('isUtcIsoDateString()', () => {
   test('check if a string is an iso date string', () => {
     correct.forEach(([isoDateString, htimeDateString, isoFullRepresentation]) => {
-      expect(isIsoUTCDateString(isoDateString)).toBe(true);
-      expect(isIsoUTCDateString(htimeDateString)).toBe(false);
-      expect(isIsoUTCDateString(isoFullRepresentation)).toBe(true);
+      expect(isUtcIsoDateString(isoDateString)).toBe(true);
+      expect(isUtcIsoDateString(htimeDateString)).toBe(false);
+      expect(isUtcIsoDateString(isoFullRepresentation)).toBe(true);
     });
 
     incorrect.forEach((incorrectDateString) => {
-      expect(isIsoUTCDateString(incorrectDateString)).toBe(false);
+      expect(isUtcIsoDateString(incorrectDateString)).toBe(false);
     });
   });
 });
@@ -47,18 +48,18 @@ describe('isHTimeDateString()', () => {
   });
 });
 
-describe('formatIsoUTCDateStringAsHTimeDateString()', () => {
+describe('formatUtcIsoDateStringAsHTimeDateString()', () => {
   test('convert htime string to iso string', () => {
     correct.forEach(([isoDateString, htimeDateString]) => {
-      expect(formatIsoUTCDateStringAsHTimeDateString(isoDateString)).toBe(htimeDateString);
+      expect(formatUtcIsoDateStringAsHTimeDateString(isoDateString)).toBe(htimeDateString);
     });
   });
 });
 
-describe('formatHTimeDateStringAsIsoUTCDateString()', () => {
+describe('formatHTimeDateStringAsUtcIsoDateString()', () => {
   test('convert iso string to htime string', () => {
     correct.forEach(([isoDateString, htimeDateString]) => {
-      expect(formatHTimeDateStringAsIsoUTCDateString(htimeDateString)).toBe(isoDateString);
+      expect(formatHTimeDateStringAsUtcIsoDateString(htimeDateString)).toBe(isoDateString);
     });
   });
 });
@@ -66,19 +67,19 @@ describe('formatHTimeDateStringAsIsoUTCDateString()', () => {
 describe('parseToDate()', () => {
   test('parse iso string dates to date', () => {
     correct.forEach(([isoDateString, , isoFullRepresentation]) => {
-      expect(parseToUTCDate(isoDateString)).toEqual(toDate(isoFullRepresentation));
+      expect(parseToUtcDate(isoDateString)).toEqual(toDate(isoFullRepresentation));
     });
   });
 
   test('parse htime string dates to date', () => {
     correct.forEach(([, htimeDateString, isoFullRepresentation]) => {
-      expect(parseToUTCDate(htimeDateString)).toEqual(toDate(isoFullRepresentation));
+      expect(parseToUtcDate(htimeDateString)).toEqual(toDate(isoFullRepresentation));
     });
   });
 
   test('fail when incorrect date string is passed', () => {
     incorrect.forEach((incorrectDateString) => {
-      expect(() => parseToUTCDate(incorrectDateString)).toThrow();
+      expect(() => parseToUtcDate(incorrectDateString)).toThrow();
     });
   });
 });

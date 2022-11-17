@@ -12,8 +12,16 @@ export function addMilliseconds(date: HTime, milliseconds: number): HTime {
   });
 }
 
+export function subMilliseconds(date: HTime, milliseconds: number): HTime {
+  return addMilliseconds(date, - milliseconds);
+}
+
 export function addSeconds(date: HTime, seconds: number): HTime {
   return addMilliseconds(date, fromSecondsToMilliseconds(seconds));
+}
+
+export function subSeconds(date: HTime, seconds: number): HTime {
+  return addSeconds(date, - seconds);
 }
 
 export function addMinutes(date: HTime, minutes: number): HTime {

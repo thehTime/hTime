@@ -1,4 +1,5 @@
-import { getJustHoursOffset } from './Offset';
+import { fromMinutesToHours } from './Conversion';
+
 
 const GLOBAL_HOURS = [
   'A',
@@ -29,16 +30,16 @@ const GLOBAL_HOURS = [
 
 export type GlobalHour = typeof GLOBAL_HOURS[number];
 
-export function getGlobalHourFromUTCHour(hour: number): GlobalHour {
+export function getGlobalHourFromHour(hour: number): GlobalHour {
   return GLOBAL_HOURS[hour];
 }
 
-export function getUTCHourFromGlobalHour(globalHour: GlobalHour): number {
+export function getHourFromGlobalHour(globalHour: GlobalHour): number {
   return GLOBAL_HOURS.indexOf(globalHour);
 }
 
 export function getGlobalHours(offsetInMinutes: number = 0): GlobalHour[] {
-  const hoursOffset = getJustHoursOffset(offsetInMinutes);
+  const [hoursOffset] = fromMinutesToHours(offsetInMinutes);
 
   return [
     ...GLOBAL_HOURS.slice(-hoursOffset),

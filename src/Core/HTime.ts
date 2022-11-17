@@ -1,7 +1,7 @@
 import { fromMinutesToMilliseconds } from './Conversion';
-import { GlobalHour, getGlobalHourFromUTCHour } from './GlobalHour';
+import { GlobalHour, getGlobalHourFromHour } from './GlobalHour';
 import { formatOffsetAsIsoString, getOffsetInMinutesFromSystemDate, getOffsetInMinutes } from './Offset';
-import { formatIsoUTCDateStringAsHTimeDateString, parseToUTCDate } from './Parse';
+import { formatUtcIsoDateStringAsHTimeDateString, parseToUtcDate } from './Parse';
 
 interface DateTime<H = number> {
   readonly year: number;
@@ -28,7 +28,7 @@ export interface HTime {
     readonly offset: number;
   };
   readonly dateString: {
-    readonly UTCIso: string;
+    readonly utcIso: string;
     readonly hTime: string;
   };
 }
@@ -48,27 +48,27 @@ function createDateTime(date: Date): Readonly<DateTime> {
 function createGlobalDateTime(date: Date): Readonly<DateTime<GlobalHour>> {
   return Object.freeze({
     ...createDateTime(date),
-    hour: getGlobalHourFromUTCHour(date.getUTCHours()),
+    hour: getGlobalHourFromHour(date.getUTCHours()),
   })
 }
 
-export function getLocalDateFromUTCDate(UTCDate: Date, timeZoneOffset: number): Date {
-  return new Date(UTCDate.valueOf() + fromMinutesToMilliseconds(timeZoneOffset));
+export function getLocalDateFromUtcDate(utcDate: Date, timeZoneOffset: number): Date {
+  return new Date(utcDate.valueOf() + fromMinutesToMilliseconds(timeZoneOffset));
 }
 
 export function createHTime(options?: HTimeInstanceOptions): HTime {
   const { dateString, timeZone } = options || {};
-  const UTCDate = dateString ? parseToUTCDate(dateString) : new Date;
-  const timeZoneName = timeZone || formatOffsetAsIsoString(getOffsetInMinutesFromSystemDate(UTCDate));
-  const timeZoneOffset = getOffsetInMinutes(timeZoneName, UTCDate);
-  const localDate = getLocalDateFromUTCDate(UTCDate, timeZoneOffset);
+  const utcDate = dateString ? parseToUtcDate(dateString) : new Date;
+  const timeZoneName = timeZone || formatOffsetAsIsoString(getOffsetInMinutesFromSystemDate(utcDate));
+  const timeZoneOffset = getOffsetInMinutes(timeZoneName, utcDate);
+  const localDate = getLocalDateFromUtcDate(utcDate, timeZoneOffset);
 
   return Object.freeze({
-    utc: createDateTime(UTCDate),
+    utc: createDateTime(utcDate),
     local: createDateTime(localDate),
-    global: createGlobalDateTime(UTCDate),
+    global: createGlobalDateTime(utcDate),
 
-    epochMilliseconds: UTCDate.valueOf(),
+    epochMilliseconds: utcDate.valueOf(),
 
     timeZone: {
       name: timeZoneName,
@@ -76,12 +76,12 @@ export function createHTime(options?: HTimeInstanceOptions): HTime {
     },
 
     dateString: {
-      UTCIso: UTCDate.toISOString(),
-      hTime: formatIsoUTCDateStringAsHTimeDateString(UTCDate.toISOString()),
+      utcIso: utcDate.toISOString(),
+      hTime: formatUtcIsoDateStringAsHTimeDateString(utcDate.toISOString()),
     },
 
     toString() {
-      return UTCDate.toISOString();
+      return utcDate.toISOString();
     },
   });
 }

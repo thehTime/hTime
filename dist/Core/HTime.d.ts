@@ -22,10 +22,10 @@ export interface HTime {
         readonly offset: number;
     };
     readonly dateString: {
-        readonly UTCIso: string;
+        readonly utcIso: string;
         readonly hTime: string;
     };
 }
-export declare function getLocalDateFromUTCDate(UTCDate: Date, timeZoneOffset: number): Date;
+export declare function getLocalDateFromUtcDate(utcDate: Date, timeZoneOffset: number): Date;
 export declare function createHTime(options?: HTimeInstanceOptions): HTime;
 export {};

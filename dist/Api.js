@@ -275,6 +275,24 @@ function addDays(date, days) {
 function addWeeks(date, weeks) {
     return addMilliseconds(date, fromWeeksToMilliseconds(weeks));
 }
+function subMilliseconds(date, milliseconds) {
+    return addMilliseconds(date, -milliseconds);
+}
+function subSeconds(date, seconds) {
+    return addSeconds(date, -seconds);
+}
+function subMinutes(date, minutes) {
+    return addMinutes(date, -minutes);
+}
+function subHours(date, hours) {
+    return addHours(date, -hours);
+}
+function subDays(date, days) {
+    return addDays(date, -days);
+}
+function subWeeks(date, weeks) {
+    return addWeeks(date, -weeks);
+}
 
 exports.addDays = addDays;
 exports.addHours = addHours;
@@ -291,4 +309,10 @@ exports.isHTimeDateString = isHTimeDateString;
 exports.isPast = isPast;
 exports.isSame = isSame;
 exports.isUtcIsoDateString = isUtcIsoDateString;
+exports.subDays = subDays;
+exports.subHours = subHours;
+exports.subMilliseconds = subMilliseconds;
+exports.subMinutes = subMinutes;
+exports.subSeconds = subSeconds;
+exports.subWeeks = subWeeks;
 //# sourceMappingURL=Api.js.map

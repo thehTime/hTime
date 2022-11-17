@@ -3,7 +3,10 @@ import { GlobalHour as GlobalHourType } from './Core/GlobalHour';
 import { isUtcIsoDateString, isHTimeDateString } from './Core/Parse';
 import { createClock } from './Util/Clock';
 import { isBefore, isPast, isAfter, isFuture, isSame } from './Util/Comparison';
-import { addMilliseconds, addSeconds, addMinutes, addHours, addDays, addWeeks } from './Util/Operation';
+import {
+  addMilliseconds, addSeconds, addMinutes, addHours, addDays, addWeeks,
+  subMilliseconds, subSeconds, subMinutes, subHours, subDays, subWeeks
+} from './Util/Operation';
 
 export type HTime = HTimeType;
 export type GlobalHour = GlobalHourType;
@@ -24,6 +27,12 @@ export {
   addHours,
   addDays,
   addWeeks,
+  subMilliseconds,
+  subSeconds,
+  subMinutes,
+  subHours,
+  subDays,
+  subWeeks,
 
   // util: comparison
   isBefore,

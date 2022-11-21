@@ -139,31 +139,46 @@ function formatOffsetAsIsoString(offsetInMinutes) {
 }
 
 var REGEX_DATE_UTC_ISO = /^([1-9][0-9]{0,3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9])(:([0-5][0-9])(\.[0-9]+)?)?Z$/;
-var REGEX_HOUR_UTC_ISO = /T([0-9]{2})/;
 var REGEX_DATE_HTIME = /^([1-9][0-9]{0,3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T[abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ]:([0-5][0-9])(:([0-5][0-9])(\.[0-9]+)?)?H$/;
-var REGEX_HOUR_HTIME = /T([a-zA-Z]{1})/;
+function padNumber(number, length) {
+    return "".concat(number || 0).padStart(length, '0');
+}
 function isUtcIsoDateString(dateString) {
     return REGEX_DATE_UTC_ISO.test(dateString);
 }
 function isHTimeDateString(dateString) {
     return REGEX_DATE_HTIME.test(dateString);
 }
+function createDateString(type, year, month, day, hour, minute, second, millisecond) {
+    return padNumber(year, 2)
+        + '-' + padNumber(month, 2)
+        + '-' + padNumber(day, 2)
+        + 'T' + (type === 'H' ? hour : padNumber(hour, 2))
+        + ':' + padNumber(minute, 2)
+        + ':' + padNumber(second, 2)
+        + '.' + padNumber(millisecond, 3)
+        + type;
+}
+function breakdownDateString(dateString) {
+    var type = dateString.charAt(dateString.length - 1);
+    var _a = dateString.replace(type, '').split('T'), date = _a[0], time = _a[1];
+    var _b = date.split('-'), year = _b[0], month = _b[1], day = _b[2];
+    var _c = time.split(':'), hour = _c[0], minute = _c[1], secondAndMillisecond = _c[2];
+    if (!secondAndMillisecond) {
+        return [type, year, month, day, hour, minute, undefined, undefined];
+    }
+    var _d = secondAndMillisecond.split('.'), second = _d[0], millisecond = _d[1];
+    return [type, year, month, day, hour, minute, second, millisecond];
+}
 function formatUtcIsoDateStringAsHTimeDateString(utcDateString) {
-    var match = (utcDateString.match(REGEX_HOUR_UTC_ISO) || [])[0];
-    var isoHour = match.slice(1);
-    var globalHour = getGlobalHourFromHour(parseInt(isoHour));
-    var _a = utcDateString.split(match), day = _a[0], time = _a[1];
-    var formattedTime = time.replace(/Z$/, 'H');
-    return "".concat(day, "T").concat(globalHour).concat(formattedTime);
+    var _a = breakdownDateString(utcDateString), year = _a[1], month = _a[2], day = _a[3], hour = _a[4], minute = _a[5], second = _a[6], millisecond = _a[7];
+    var globalHour = getGlobalHourFromHour(parseInt(hour));
+    return createDateString('H', year, month, day, globalHour, minute, second, millisecond);
 }
 function formatHTimeDateStringAsUtcIsoDateString(hTimeDateString) {
-    var match = (hTimeDateString.match(REGEX_HOUR_HTIME) || [])[0];
-    var globalHour = match.charAt(1);
-    var localHour = getHourFromGlobalHour(globalHour);
-    var _a = hTimeDateString.split(match), day = _a[0], time = _a[1];
-    var formattedLocalHour = localHour < 10 ? "0".concat(localHour) : localHour;
-    var formattedTime = time.replace(/H$/, 'Z');
-    return "".concat(day, "T").concat(formattedLocalHour).concat(formattedTime);
+    var _a = breakdownDateString(hTimeDateString), year = _a[1], month = _a[2], day = _a[3], globalHour = _a[4], minute = _a[5], second = _a[6], millisecond = _a[7];
+    var hour = getHourFromGlobalHour(globalHour);
+    return createDateString('Z', year, month, day, hour, minute, second, millisecond);
 }
 function parseToUtcDate(dateString) {
     if (isUtcIsoDateString(dateString)) {
@@ -172,7 +187,7 @@ function parseToUtcDate(dateString) {
     if (isHTimeDateString(dateString)) {
         return new Date(formatHTimeDateStringAsUtcIsoDateString(dateString));
     }
-    throw new Error("\"".concat(dateString, "\" is an invalid date"));
+    throw new Error("[PARSE] \"".concat(dateString, "\" is an invalid date"));
 }
 
 function createDateTime(date) {
@@ -300,7 +315,9 @@ exports.addMilliseconds = addMilliseconds;
 exports.addMinutes = addMinutes;
 exports.addSeconds = addSeconds;
 exports.addWeeks = addWeeks;
+exports.breakdownDateString = breakdownDateString;
 exports.createClock = createClock;
+exports.createDateString = createDateString;
 exports.createHTime = createHTime;
 exports.isAfter = isAfter;
 exports.isBefore = isBefore;

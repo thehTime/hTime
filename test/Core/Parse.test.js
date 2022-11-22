@@ -1,12 +1,11 @@
-import { toDate } from 'date-fns-tz';
 import { parseToUtcDate, formatUtcIsoDateStringAsHTimeDateString, formatHTimeDateStringAsUtcIsoDateString, isUtcIsoDateString, isHTimeDateString } from 'src/Core/Parse';
 
 const correct = [
-  // iso | htime | full iso
-  ['2022-10-10T00:34Z', '2022-10-10TA:34H', '2022-10-10T00:34:00.000Z'],
-  ['2022-10-10T12:34:56Z', '2022-10-10TN:34:56H', '2022-10-10T12:34:56.000Z'],
-  ['2022-10-10T23:34:56.999Z', '2022-10-10TZ:34:56.999H', '2022-10-10T23:34:56.999Z'],
-  ['2022-10-10T12:12:12.000Z', '2022-10-10TN:12:12.000H', '2022-10-10T12:12:12.000Z'],
+  // iso | htime | full iso | full htime
+  ['2022-10-10T00:34Z', '2022-10-10TA:34H', '2022-10-10T00:34:00.000Z', '2022-10-10TA:34:00.000H'],
+  ['2022-10-10T12:34:56Z', '2022-10-10TN:34:56H', '2022-10-10T12:34:56.000Z', '2022-10-10TN:34:56.000H'],
+  ['2022-10-10T23:34:56.999Z', '2022-10-10TZ:34:56.999H', '2022-10-10T23:34:56.999Z', '2022-10-10TZ:34:56.999H'],
+  ['2022-10-10T12:12:12.000Z', '2022-10-10TN:12:12.000H', '2022-10-10T12:12:12.000Z', '2022-10-10TN:12:12.000H'],
 ];
 
 const incorrect = [
@@ -50,16 +49,16 @@ describe('isHTimeDateString()', () => {
 
 describe('formatUtcIsoDateStringAsHTimeDateString()', () => {
   test('convert htime string to iso string', () => {
-    correct.forEach(([isoDateString, htimeDateString]) => {
-      expect(formatUtcIsoDateStringAsHTimeDateString(isoDateString)).toBe(htimeDateString);
+    correct.forEach(([isoDateString,,, htimeFullDateString]) => {
+      expect(formatUtcIsoDateStringAsHTimeDateString(isoDateString)).toBe(htimeFullDateString);
     });
   });
 });
 
 describe('formatHTimeDateStringAsUtcIsoDateString()', () => {
   test('convert iso string to htime string', () => {
-    correct.forEach(([isoDateString, htimeDateString]) => {
-      expect(formatHTimeDateStringAsUtcIsoDateString(htimeDateString)).toBe(isoDateString);
+    correct.forEach(([, htimeDateString, isoFullDateString]) => {
+      expect(formatHTimeDateStringAsUtcIsoDateString(htimeDateString)).toBe(isoFullDateString);
     });
   });
 });
@@ -67,13 +66,13 @@ describe('formatHTimeDateStringAsUtcIsoDateString()', () => {
 describe('parseToDate()', () => {
   test('parse iso string dates to date', () => {
     correct.forEach(([isoDateString, , isoFullRepresentation]) => {
-      expect(parseToUtcDate(isoDateString)).toEqual(toDate(isoFullRepresentation));
+      expect(parseToUtcDate(isoDateString)).toEqual(new Date(isoFullRepresentation));
     });
   });
 
   test('parse htime string dates to date', () => {
     correct.forEach(([, htimeDateString, isoFullRepresentation]) => {
-      expect(parseToUtcDate(htimeDateString)).toEqual(toDate(isoFullRepresentation));
+      expect(parseToUtcDate(htimeDateString)).toEqual(new Date(isoFullRepresentation));
     });
   });
 

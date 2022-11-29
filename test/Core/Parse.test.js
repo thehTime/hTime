@@ -49,19 +49,19 @@ describe('isHTimeDateString()', () => {
 
 describe('createDateString()', () => {
   test('convert htime string to iso string', () => {
-    expect(createDateString('Z', '2022', '10', '10', '23', '34', 56, 999)).toEqual('2022-10-10T23:34:56.999Z');
-    expect(createDateString('H', 2022, 10, 10, 'G', 34, 56, 999)).toEqual('2022-10-10TG:34:56.999H');
-    expect(createDateString('H', 2022, 10, 10, 'G', 34, 56)).toEqual('2022-10-10TG:34:56.000H');
-    expect(createDateString('H', 2022, 10, 10, 'G', 34)).toEqual('2022-10-10TG:34:00.000H');
+    expect(createDateString('Z', '2022', '10', '10', 1, '34', 56, 999)).toEqual('2022-10-10T01:34:56.999Z');
+    expect(createDateString('H', 2022, 10, 10, 'H', 34, 56, 999)).toEqual('2022-10-10TH:34:56.999H');
+    expect(createDateString('H', 2022, 10, 10, 'T', 34, 56)).toEqual('2022-10-10TT:34:56.000H');
+    expect(createDateString('H', 2022, 10, 10, 'Z', 34)).toEqual('2022-10-10TZ:34:00.000H');
   });
 });
 
 describe('breakdownDateString()', () => {
   test('convert htime string to iso string', () => {
     expect(breakdownDateString('2022-10-10T23:34:56.999Z')).toEqual(['Z', '2022', '10', '10', '23', '34', '56', '999']);
-    expect(breakdownDateString('2022-10-10TG:34:56.999H')).toEqual(['H', '2022', '10', '10', 'G', '34', '56', '999']);
-    expect(breakdownDateString('2022-10-10TG:34:56H')).toEqual(['H', '2022', '10', '10', 'G', '34', '56', undefined]);
-    expect(breakdownDateString('2022-10-10TG:34H')).toEqual(['H', '2022', '10', '10', 'G', '34', undefined, undefined]);
+    expect(breakdownDateString('2022-10-10TH:34:56.999H')).toEqual(['H', '2022', '10', '10', 'H', '34', '56', '999']);
+    expect(breakdownDateString('2022-10-10TT:34:56H')).toEqual(['H', '2022', '10', '10', 'T', '34', '56', undefined]);
+    expect(breakdownDateString('2022-10-10TZ:34H')).toEqual(['H', '2022', '10', '10', 'Z', '34', undefined, undefined]);
   });
 });
 

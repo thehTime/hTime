@@ -1,4 +1,4 @@
-import { parseToUtcDate, formatUtcIsoDateStringAsHTimeDateString, formatHTimeDateStringAsUtcIsoDateString, isUtcIsoDateString, isHTimeDateString } from 'src/Core/Parse';
+import { parseToUtcDate, formatUtcIsoDateStringAsHTimeDateString, formatHTimeDateStringAsUtcIsoDateString, isUtcIsoDateString, isHTimeDateString, createDateString, breakdownDateString } from 'src/Core/Parse';
 
 const correct = [
   // iso | htime | full iso | full htime
@@ -47,9 +47,27 @@ describe('isHTimeDateString()', () => {
   });
 });
 
+describe('createDateString()', () => {
+  test('convert htime string to iso string', () => {
+    expect(createDateString('Z', '2022', '10', '10', '23', '34', 56, 999)).toEqual('2022-10-10T23:34:56.999Z');
+    expect(createDateString('H', 2022, 10, 10, 'G', 34, 56, 999)).toEqual('2022-10-10TG:34:56.999H');
+    expect(createDateString('H', 2022, 10, 10, 'G', 34, 56)).toEqual('2022-10-10TG:34:56.000H');
+    expect(createDateString('H', 2022, 10, 10, 'G', 34)).toEqual('2022-10-10TG:34:00.000H');
+  });
+});
+
+describe('breakdownDateString()', () => {
+  test('convert htime string to iso string', () => {
+    expect(breakdownDateString('2022-10-10T23:34:56.999Z')).toEqual(['Z', '2022', '10', '10', '23', '34', '56', '999']);
+    expect(breakdownDateString('2022-10-10TG:34:56.999H')).toEqual(['H', '2022', '10', '10', 'G', '34', '56', '999']);
+    expect(breakdownDateString('2022-10-10TG:34:56H')).toEqual(['H', '2022', '10', '10', 'G', '34', '56', undefined]);
+    expect(breakdownDateString('2022-10-10TG:34H')).toEqual(['H', '2022', '10', '10', 'G', '34', undefined, undefined]);
+  });
+});
+
 describe('formatUtcIsoDateStringAsHTimeDateString()', () => {
   test('convert htime string to iso string', () => {
-    correct.forEach(([isoDateString,,, htimeFullDateString]) => {
+    correct.forEach(([isoDateString, , , htimeFullDateString]) => {
       expect(formatUtcIsoDateStringAsHTimeDateString(isoDateString)).toBe(htimeFullDateString);
     });
   });

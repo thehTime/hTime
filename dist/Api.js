@@ -140,6 +140,7 @@ function formatOffsetAsIsoString(offsetInMinutes) {
 
 var REGEX_DATE_UTC_ISO = /^([1-9][0-9]{0,3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9])(:([0-5][0-9])(\.[0-9]+)?)?Z$/;
 var REGEX_DATE_HTIME = /^([1-9][0-9]{0,3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T[abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ]:([0-5][0-9])(:([0-5][0-9])(\.[0-9]+)?)?H$/;
+var REGEX_BREAKDOWN = /(\d+)|(?<=T)\w/gi;
 function padNumber(number, length) {
     return "".concat(number || 0).padStart(length, '0');
 }
@@ -161,13 +162,7 @@ function createDateString(type, year, month, day, hour, minute, second, millisec
 }
 function breakdownDateString(dateString) {
     var type = dateString.charAt(dateString.length - 1);
-    var _a = dateString.replace(type, '').split('T'), date = _a[0], time = _a[1];
-    var _b = date.split('-'), year = _b[0], month = _b[1], day = _b[2];
-    var _c = time.split(':'), hour = _c[0], minute = _c[1], secondAndMillisecond = _c[2];
-    if (!secondAndMillisecond) {
-        return [type, year, month, day, hour, minute, undefined, undefined];
-    }
-    var _d = secondAndMillisecond.split('.'), second = _d[0], millisecond = _d[1];
+    var _a = dateString.match(REGEX_BREAKDOWN), year = _a[0], month = _a[1], day = _a[2], hour = _a[3], minute = _a[4], second = _a[5], millisecond = _a[6];
     return [type, year, month, day, hour, minute, second, millisecond];
 }
 function formatUtcIsoDateStringAsHTimeDateString(utcDateString) {

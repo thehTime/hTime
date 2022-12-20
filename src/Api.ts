@@ -1,7 +1,7 @@
 import * as Constant from './Core/Constant';
 import { HTime as HTimeType, createHTime } from './Core/HTime';
 import { GlobalHour as GlobalHourType } from './Core/GlobalHour';
-import { fromDaysToMilliseconds, fromMillisecondsToMinutes, fromMinutesToHours, fromMinutesToMilliseconds, fromWeeksToMilliseconds } from './Core/Conversion';
+import { fromSecondsToMilliseconds, fromHoursToMilliseconds, fromDaysToMilliseconds, fromMillisecondsToMinutes, fromMinutesToHours, fromMinutesToMilliseconds, fromWeeksToMilliseconds } from './Core/Conversion';
 import { isUtcIsoDateString, isHTimeDateString, createDateString, breakdownDateString } from './Core/Parse';
 import { createClock } from './Util/Clock';
 import { isBefore, isPast, isAfter, isFuture, isSame } from './Util/Comparison';
@@ -16,7 +16,9 @@ export type GlobalHour = GlobalHourType;
 export {
   Constant,
 
+  fromSecondsToMilliseconds,
   fromMinutesToMilliseconds,
+  fromHoursToMilliseconds,
   fromDaysToMilliseconds,
   fromWeeksToMilliseconds,
   fromMillisecondsToMinutes,

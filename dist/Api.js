@@ -2,6 +2,41 @@
 
 var dateFnsTz = require('date-fns-tz');
 
+var MILLISECONDS_IN_SECOND = 1000;
+var SECONDS_IN_MINUTE = 60;
+var MINUTES_IN_HOUR = 60;
+var HOURS_IN_DAY = 24;
+var DAYS_IN_WEEK = 7;
+var MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE;
+var MILLISECONDS_IN_HOUR = MILLISECONDS_IN_MINUTE * MINUTES_IN_HOUR;
+var MILLISECONDS_IN_DAY = MILLISECONDS_IN_HOUR * HOURS_IN_DAY;
+var MILLISECONDS_IN_WEEK = MILLISECONDS_IN_DAY * DAYS_IN_WEEK;
+var SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR;
+var SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY;
+var SECONDS_IN_WEEK = SECONDS_IN_DAY * DAYS_IN_WEEK;
+var MINUTES_IN_DAY = MINUTES_IN_HOUR * HOURS_IN_DAY;
+var MINUTES_IN_WEEK = MINUTES_IN_DAY * DAYS_IN_WEEK;
+var HOURS_IN_WEEK = HOURS_IN_DAY * DAYS_IN_WEEK;
+
+var Constant = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    MILLISECONDS_IN_SECOND: MILLISECONDS_IN_SECOND,
+    SECONDS_IN_MINUTE: SECONDS_IN_MINUTE,
+    MINUTES_IN_HOUR: MINUTES_IN_HOUR,
+    HOURS_IN_DAY: HOURS_IN_DAY,
+    DAYS_IN_WEEK: DAYS_IN_WEEK,
+    MILLISECONDS_IN_MINUTE: MILLISECONDS_IN_MINUTE,
+    MILLISECONDS_IN_HOUR: MILLISECONDS_IN_HOUR,
+    MILLISECONDS_IN_DAY: MILLISECONDS_IN_DAY,
+    MILLISECONDS_IN_WEEK: MILLISECONDS_IN_WEEK,
+    SECONDS_IN_HOUR: SECONDS_IN_HOUR,
+    SECONDS_IN_DAY: SECONDS_IN_DAY,
+    SECONDS_IN_WEEK: SECONDS_IN_WEEK,
+    MINUTES_IN_DAY: MINUTES_IN_DAY,
+    MINUTES_IN_WEEK: MINUTES_IN_WEEK,
+    HOURS_IN_WEEK: HOURS_IN_WEEK
+});
+
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -49,12 +84,6 @@ function divideRemainder(dividend, divisor) {
     return dividend % divisor;
 }
 
-var MILLISECONDS_IN_SECOND = 1000;
-var SECONDS_IN_MINUTE = 60;
-var MINUTES_IN_HOUR = 60;
-var HOURS_IN_DAY = 24;
-var DAYS_IN_WEEK = 7;
-var MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE;
 function fromSecondsToMilliseconds(seconds) {
     return seconds * MILLISECONDS_IN_SECOND;
 }
@@ -304,6 +333,7 @@ function subWeeks(date, weeks) {
     return addWeeks(date, -weeks);
 }
 
+exports.Constant = Constant;
 exports.addDays = addDays;
 exports.addHours = addHours;
 exports.addMilliseconds = addMilliseconds;

@@ -1,0 +1,15 @@
+export declare const MILLISECONDS_IN_SECOND = 1000;
+export declare const SECONDS_IN_MINUTE = 60;
+export declare const MINUTES_IN_HOUR = 60;
+export declare const HOURS_IN_DAY = 24;
+export declare const DAYS_IN_WEEK = 7;
+export declare const MILLISECONDS_IN_MINUTE: number;
+export declare const MILLISECONDS_IN_HOUR: number;
+export declare const MILLISECONDS_IN_DAY: number;
+export declare const MILLISECONDS_IN_WEEK: number;
+export declare const SECONDS_IN_HOUR: number;
+export declare const SECONDS_IN_DAY: number;
+export declare const SECONDS_IN_WEEK: number;
+export declare const MINUTES_IN_DAY: number;
+export declare const MINUTES_IN_WEEK: number;
+export declare const HOURS_IN_WEEK: number;

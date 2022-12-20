@@ -1,12 +1,5 @@
+import { DAYS_IN_WEEK, HOURS_IN_DAY, MILLISECONDS_IN_MINUTE, MILLISECONDS_IN_SECOND, MINUTES_IN_HOUR, SECONDS_IN_MINUTE } from './Constant';
 import { divideAndFloor, divideRemainder } from './Math';
-
-const MILLISECONDS_IN_SECOND = 1000;
-const SECONDS_IN_MINUTE = 60;
-const MINUTES_IN_HOUR = 60;
-const HOURS_IN_DAY = 24;
-const DAYS_IN_WEEK = 7;
-
-const MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE;
 
 export function fromSecondsToMilliseconds(seconds: number): number {
   return seconds * MILLISECONDS_IN_SECOND;

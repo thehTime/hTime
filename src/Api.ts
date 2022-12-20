@@ -1,3 +1,4 @@
+import * as Constant from './Core/Constant';
 import { HTime as HTimeType, createHTime } from './Core/HTime';
 import { GlobalHour as GlobalHourType } from './Core/GlobalHour';
 import { isUtcIsoDateString, isHTimeDateString, createDateString, breakdownDateString } from './Core/Parse';
@@ -12,17 +13,15 @@ export type HTime = HTimeType;
 export type GlobalHour = GlobalHourType;
 
 export {
-  // core
+  Constant,
+
   createHTime,
   isUtcIsoDateString,
   isHTimeDateString,
   createDateString,
   breakdownDateString,
 
-  // util: clock
   createClock,
-
-  // util: operation
   addMilliseconds,
   addSeconds,
   addMinutes,
@@ -35,8 +34,6 @@ export {
   subHours,
   subDays,
   subWeeks,
-
-  // util: comparison
   isBefore,
   isPast,
   isAfter,

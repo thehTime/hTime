@@ -2,6 +2,41 @@
 
 var dateFnsTz = require('date-fns-tz');
 
+var MILLISECONDS_IN_SECOND = 1000;
+var SECONDS_IN_MINUTE = 60;
+var MINUTES_IN_HOUR = 60;
+var HOURS_IN_DAY = 24;
+var DAYS_IN_WEEK = 7;
+var MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE;
+var MILLISECONDS_IN_HOUR = MILLISECONDS_IN_MINUTE * MINUTES_IN_HOUR;
+var MILLISECONDS_IN_DAY = MILLISECONDS_IN_HOUR * HOURS_IN_DAY;
+var MILLISECONDS_IN_WEEK = MILLISECONDS_IN_DAY * DAYS_IN_WEEK;
+var SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR;
+var SECONDS_IN_DAY = SECONDS_IN_HOUR * HOURS_IN_DAY;
+var SECONDS_IN_WEEK = SECONDS_IN_DAY * DAYS_IN_WEEK;
+var MINUTES_IN_DAY = MINUTES_IN_HOUR * HOURS_IN_DAY;
+var MINUTES_IN_WEEK = MINUTES_IN_DAY * DAYS_IN_WEEK;
+var HOURS_IN_WEEK = HOURS_IN_DAY * DAYS_IN_WEEK;
+
+var Constant = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    MILLISECONDS_IN_SECOND: MILLISECONDS_IN_SECOND,
+    SECONDS_IN_MINUTE: SECONDS_IN_MINUTE,
+    MINUTES_IN_HOUR: MINUTES_IN_HOUR,
+    HOURS_IN_DAY: HOURS_IN_DAY,
+    DAYS_IN_WEEK: DAYS_IN_WEEK,
+    MILLISECONDS_IN_MINUTE: MILLISECONDS_IN_MINUTE,
+    MILLISECONDS_IN_HOUR: MILLISECONDS_IN_HOUR,
+    MILLISECONDS_IN_DAY: MILLISECONDS_IN_DAY,
+    MILLISECONDS_IN_WEEK: MILLISECONDS_IN_WEEK,
+    SECONDS_IN_HOUR: SECONDS_IN_HOUR,
+    SECONDS_IN_DAY: SECONDS_IN_DAY,
+    SECONDS_IN_WEEK: SECONDS_IN_WEEK,
+    MINUTES_IN_DAY: MINUTES_IN_DAY,
+    MINUTES_IN_WEEK: MINUTES_IN_WEEK,
+    HOURS_IN_WEEK: HOURS_IN_WEEK
+});
+
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -49,12 +84,6 @@ function divideRemainder(dividend, divisor) {
     return dividend % divisor;
 }
 
-var MILLISECONDS_IN_SECOND = 1000;
-var SECONDS_IN_MINUTE = 60;
-var MINUTES_IN_HOUR = 60;
-var HOURS_IN_DAY = 24;
-var DAYS_IN_WEEK = 7;
-var MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE;
 function fromSecondsToMilliseconds(seconds) {
     return seconds * MILLISECONDS_IN_SECOND;
 }
@@ -140,6 +169,7 @@ function formatOffsetAsIsoString(offsetInMinutes) {
 
 var REGEX_DATE_UTC_ISO = /^([1-9][0-9]{0,3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9])(:([0-5][0-9])(\.[0-9]+)?)?Z$/;
 var REGEX_DATE_HTIME = /^([1-9][0-9]{0,3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T[abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ]:([0-5][0-9])(:([0-5][0-9])(\.[0-9]+)?)?H$/;
+var REGEX_BREAKDOWN = /(\d+)|(?<=T)\w/gi;
 function padNumber(number, length) {
     return "".concat(number || 0).padStart(length, '0');
 }
@@ -161,13 +191,7 @@ function createDateString(type, year, month, day, hour, minute, second, millisec
 }
 function breakdownDateString(dateString) {
     var type = dateString.charAt(dateString.length - 1);
-    var _a = dateString.replace(type, '').split('T'), date = _a[0], time = _a[1];
-    var _b = date.split('-'), year = _b[0], month = _b[1], day = _b[2];
-    var _c = time.split(':'), hour = _c[0], minute = _c[1], secondAndMillisecond = _c[2];
-    if (!secondAndMillisecond) {
-        return [type, year, month, day, hour, minute, undefined, undefined];
-    }
-    var _d = secondAndMillisecond.split('.'), second = _d[0], millisecond = _d[1];
+    var _a = dateString.match(REGEX_BREAKDOWN), year = _a[0], month = _a[1], day = _a[2], hour = _a[3], minute = _a[4], second = _a[5], millisecond = _a[6];
     return [type, year, month, day, hour, minute, second, millisecond];
 }
 function formatUtcIsoDateStringAsHTimeDateString(utcDateString) {
@@ -309,6 +333,7 @@ function subWeeks(date, weeks) {
     return addWeeks(date, -weeks);
 }
 
+exports.Constant = Constant;
 exports.addDays = addDays;
 exports.addHours = addHours;
 exports.addMilliseconds = addMilliseconds;

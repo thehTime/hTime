@@ -1,6 +1,7 @@
 'use strict';
 
 var dateFnsTz = require('date-fns-tz');
+var dateFns = require('date-fns');
 
 var MILLISECONDS_IN_SECOND = 1000;
 var SECONDS_IN_MINUTE = 60;
@@ -73,6 +74,9 @@ function __spreadArray(to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 }
 
+function isOdd(number) {
+    return number % 2 === 1;
+}
 function divide(dividend, divisor) {
     return dividend / divisor;
 }
@@ -333,6 +337,30 @@ function subWeeks(date, weeks) {
     return addWeeks(date, -weeks);
 }
 
+var FORMAT_HTIME_REGEX = /F{1}/g;
+var FORMAT_ESCAPE_CHAR = "'";
+function getDateFromHTime(hTime, useLocal) {
+    var date = useLocal ? hTime.local : hTime.utc;
+    return new Date(date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
+}
+function replaceHTimePatternIfNotEscaped(hour) {
+    return function (fragment, index) {
+        if (isOdd(index)) {
+            return fragment;
+        }
+        return fragment
+            .replaceAll(FORMAT_HTIME_REGEX, "".concat(FORMAT_ESCAPE_CHAR).concat(hour).concat(FORMAT_ESCAPE_CHAR))
+            .replaceAll("".concat(FORMAT_ESCAPE_CHAR).concat(FORMAT_ESCAPE_CHAR), '');
+    };
+}
+function format(date, template, options) {
+    var escapedTemplate = template
+        .split(FORMAT_ESCAPE_CHAR)
+        .map(replaceHTimePatternIfNotEscaped(date.global.hour))
+        .join(FORMAT_ESCAPE_CHAR);
+    return dateFns.format(getDateFromHTime(date, options === null || options === void 0 ? void 0 : options.useLocal), escapedTemplate);
+}
+
 exports.Constant = Constant;
 exports.addDays = addDays;
 exports.addHours = addHours;
@@ -344,6 +372,7 @@ exports.breakdownDateString = breakdownDateString;
 exports.createClock = createClock;
 exports.createDateString = createDateString;
 exports.createHTime = createHTime;
+exports.format = format;
 exports.fromDaysToMilliseconds = fromDaysToMilliseconds;
 exports.fromHoursToMilliseconds = fromHoursToMilliseconds;
 exports.fromMillisecondsToMinutes = fromMillisecondsToMinutes;

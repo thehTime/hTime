@@ -1,4 +1,4 @@
-import { getGlobalHourFromHour, getHourFromGlobalHour, getGlobalHours } from 'src/Core/GlobalHour';
+import { getGlobalHourFromHour, getHourFromGlobalHour, getGlobalHours, isPreviousGlobalHour, isNextGlobalHour } from 'src/Core/GlobalHour';
 
 describe('getGlobalHourFromHour()', () => {
   test('return correct global hour', () => {
@@ -37,5 +37,27 @@ describe('getGlobalHours()', () => {
   test('shift counter-clockwise when -100min offset is passed', () => {
     expect(getGlobalHours(-100)[0]).toBe('B');
     expect(getGlobalHours(-100)[23]).toBe('A');
+  });
+});
+
+describe('isPreviousGlobalHour()', () => {
+  test('return if comparison hour comes before target hour', () => {
+    expect(isPreviousGlobalHour('B', 'A')).toEqual(true);
+    expect(isPreviousGlobalHour('N', 'M')).toEqual(true);
+    expect(isPreviousGlobalHour('A', 'Z')).toEqual(true);
+    expect(isPreviousGlobalHour('C', 'A')).toEqual(false);
+    expect(isPreviousGlobalHour('C', 'D')).toEqual(false);
+    expect(isPreviousGlobalHour('Z', 'A')).toEqual(false);
+  });
+});
+
+describe('isNextGlobalHour()', () => {
+  test('return if comparison hour comes after target hour', () => {
+    expect(isNextGlobalHour('A', 'B')).toEqual(true);
+    expect(isNextGlobalHour('M', 'N')).toEqual(true);
+    expect(isNextGlobalHour('Z', 'A')).toEqual(true);
+    expect(isNextGlobalHour('C', 'E')).toEqual(false);
+    expect(isNextGlobalHour('C', 'B')).toEqual(false);
+    expect(isNextGlobalHour('A', 'Z')).toEqual(false);
   });
 });

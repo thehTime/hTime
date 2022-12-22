@@ -1,6 +1,6 @@
 import * as Constant from './Core/Constant';
 import { HTime as HTimeType, createHTime } from './Core/HTime';
-import { GlobalHour as GlobalHourType } from './Core/GlobalHour';
+import { GlobalHour as GlobalHourType, isPreviousGlobalHour, isNextGlobalHour } from './Core/GlobalHour';
 import {
   fromSecondsToMilliseconds,
   fromMinutesToMilliseconds,
@@ -34,6 +34,8 @@ export {
   fromMinutesToHours,
 
   createHTime,
+  isPreviousGlobalHour,
+  isNextGlobalHour,
   isUtcIsoDateString,
   isHTimeDateString,
   createDateString,

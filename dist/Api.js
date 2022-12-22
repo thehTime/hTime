@@ -153,6 +153,16 @@ function getGlobalHours(offsetInMinutes) {
     var hoursOffset = fromMinutesToHours(offsetInMinutes)[0];
     return __spreadArray(__spreadArray([], GLOBAL_HOURS.slice(-hoursOffset), true), GLOBAL_HOURS.slice(0, -hoursOffset), true);
 }
+function isPreviousGlobalHour(targetHour, comparisonHour) {
+    var delta = GLOBAL_HOURS.indexOf(targetHour) - GLOBAL_HOURS.indexOf(comparisonHour);
+    if (delta === -(GLOBAL_HOURS.length - 1)) {
+        return true;
+    }
+    return delta === 1;
+}
+function isNextGlobalHour(targetHour, comparisonHour) {
+    return isPreviousGlobalHour(comparisonHour, targetHour);
+}
 
 function getOffsetInMinutes(timeZoneName, utcDate) {
     return fromMillisecondsToMinutes(dateFnsTz.getTimezoneOffset(timeZoneName, utcDate))[0];
@@ -384,7 +394,9 @@ exports.isAfter = isAfter;
 exports.isBefore = isBefore;
 exports.isFuture = isFuture;
 exports.isHTimeDateString = isHTimeDateString;
+exports.isNextGlobalHour = isNextGlobalHour;
 exports.isPast = isPast;
+exports.isPreviousGlobalHour = isPreviousGlobalHour;
 exports.isSame = isSame;
 exports.isUtcIsoDateString = isUtcIsoDateString;
 exports.subDays = subDays;

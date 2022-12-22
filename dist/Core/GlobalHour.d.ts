@@ -3,4 +3,6 @@ export declare type GlobalHour = typeof GLOBAL_HOURS[number];
 export declare function getGlobalHourFromHour(hour: number): GlobalHour;
 export declare function getHourFromGlobalHour(globalHour: GlobalHour): number;
 export declare function getGlobalHours(offsetInMinutes?: number): GlobalHour[];
+export declare function isPreviousGlobalHour(targetHour: GlobalHour, comparisonHour: GlobalHour): boolean;
+export declare function isNextGlobalHour(targetHour: GlobalHour, comparisonHour: GlobalHour): boolean;
 export {};

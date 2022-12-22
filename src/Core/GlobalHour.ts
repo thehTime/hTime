@@ -1,6 +1,5 @@
 import { fromMinutesToHours } from './Conversion';
 
-
 const GLOBAL_HOURS = [
   'A',
   'B',
@@ -45,4 +44,18 @@ export function getGlobalHours(offsetInMinutes: number = 0): GlobalHour[] {
     ...GLOBAL_HOURS.slice(-hoursOffset),
     ...GLOBAL_HOURS.slice(0, -hoursOffset),
   ]
+}
+
+export function isPreviousGlobalHour(targetHour: GlobalHour, comparisonHour: GlobalHour): boolean {
+  const delta = GLOBAL_HOURS.indexOf(targetHour) - GLOBAL_HOURS.indexOf(comparisonHour);
+
+  if (delta === - (GLOBAL_HOURS.length - 1)) {
+    return true;
+  }
+
+  return delta === 1;
+}
+
+export function isNextGlobalHour(targetHour: GlobalHour, comparisonHour: GlobalHour): boolean {
+  return isPreviousGlobalHour(comparisonHour, targetHour);
 }

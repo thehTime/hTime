@@ -1,6 +1,6 @@
 import * as Constant from './Core/Constant';
 import { HTime as HTimeType, createHTime } from './Core/HTime';
-import { GlobalHour as GlobalHourType } from './Core/GlobalHour';
+import { GlobalHour as GlobalHourType, isPreviousGlobalHour, isNextGlobalHour } from './Core/GlobalHour';
 import { fromSecondsToMilliseconds, fromMinutesToMilliseconds, fromHoursToMilliseconds, fromDaysToMilliseconds, fromWeeksToMilliseconds, fromMillisecondsToMinutes, fromMinutesToHours } from './Core/Conversion';
 import { isUtcIsoDateString, isHTimeDateString, createDateString, breakdownDateString } from './Core/Parse';
 import { createClock } from './Util/Clock';
@@ -9,4 +9,4 @@ import { addMilliseconds, addSeconds, addMinutes, addHours, addDays, addWeeks, s
 import { format } from './Util/Format';
 export declare type HTime = HTimeType;
 export declare type GlobalHour = GlobalHourType;
-export { Constant, fromSecondsToMilliseconds, fromMinutesToMilliseconds, fromHoursToMilliseconds, fromDaysToMilliseconds, fromWeeksToMilliseconds, fromMillisecondsToMinutes, fromMinutesToHours, createHTime, isUtcIsoDateString, isHTimeDateString, createDateString, breakdownDateString, createClock, addMilliseconds, addSeconds, addMinutes, addHours, addDays, addWeeks, subMilliseconds, subSeconds, subMinutes, subHours, subDays, subWeeks, isBefore, isPast, isAfter, isFuture, isSame, format, };
+export { Constant, fromSecondsToMilliseconds, fromMinutesToMilliseconds, fromHoursToMilliseconds, fromDaysToMilliseconds, fromWeeksToMilliseconds, fromMillisecondsToMinutes, fromMinutesToHours, createHTime, isPreviousGlobalHour, isNextGlobalHour, isUtcIsoDateString, isHTimeDateString, createDateString, breakdownDateString, createClock, addMilliseconds, addSeconds, addMinutes, addHours, addDays, addWeeks, subMilliseconds, subSeconds, subMinutes, subHours, subDays, subWeeks, isBefore, isPast, isAfter, isFuture, isSame, format, };

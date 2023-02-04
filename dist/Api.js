@@ -274,36 +274,6 @@ function createClock(hTime) {
     return getGlobalHours(hTime.timeZone.offset);
 }
 
-var COMPARISON_ACCURACY = [
-    'year',
-    'month',
-    'day',
-    'hour',
-    'minute',
-    'second',
-    'millisecond',
-];
-function isBefore(date, comparison) {
-    return date.epochMilliseconds < comparison.epochMilliseconds;
-}
-function isAfter(date, comparison) {
-    return date.epochMilliseconds > comparison.epochMilliseconds;
-}
-function isPast(date) {
-    return isBefore(date, createHTime());
-}
-function isFuture(date) {
-    return isAfter(date, createHTime());
-}
-function isSame(date, comparison, accuracy) {
-    if (accuracy === void 0) { accuracy = 'millisecond'; }
-    if (accuracy === 'millisecond') {
-        return date.epochMilliseconds === comparison.epochMilliseconds;
-    }
-    var props = COMPARISON_ACCURACY.slice(0, COMPARISON_ACCURACY.indexOf(accuracy));
-    return props.every(function (prop) { return date.global[prop] === comparison.global[prop]; });
-}
-
 function addMilliseconds(date, milliseconds) {
     if (milliseconds === 0) {
         return date;
@@ -347,6 +317,45 @@ function subWeeks(date, weeks) {
     return addWeeks(date, -weeks);
 }
 
+function createRunner(hTime) {
+    if (hTime === void 0) { hTime = createHTime(); }
+    var millisecondsWhenCreated = Date.now();
+    function getMillisecondsDelta() {
+        return Date.now() - millisecondsWhenCreated;
+    }
+    return function () { return addMilliseconds(hTime, getMillisecondsDelta()); };
+}
+
+var COMPARISON_ACCURACY = [
+    'year',
+    'month',
+    'day',
+    'hour',
+    'minute',
+    'second',
+    'millisecond',
+];
+function isBefore(date, comparison) {
+    return date.epochMilliseconds < comparison.epochMilliseconds;
+}
+function isAfter(date, comparison) {
+    return date.epochMilliseconds > comparison.epochMilliseconds;
+}
+function isPast(date) {
+    return isBefore(date, createHTime());
+}
+function isFuture(date) {
+    return isAfter(date, createHTime());
+}
+function isSame(date, comparison, accuracy) {
+    if (accuracy === void 0) { accuracy = 'millisecond'; }
+    if (accuracy === 'millisecond') {
+        return date.epochMilliseconds === comparison.epochMilliseconds;
+    }
+    var props = COMPARISON_ACCURACY.slice(0, COMPARISON_ACCURACY.indexOf(accuracy));
+    return props.every(function (prop) { return date.global[prop] === comparison.global[prop]; });
+}
+
 var FORMAT_HTIME_REGEX = /F{1}/g;
 var FORMAT_ESCAPE_CHAR = "'";
 function getDateFromHTime(hTime, useLocal) {
@@ -382,6 +391,7 @@ exports.breakdownDateString = breakdownDateString;
 exports.createClock = createClock;
 exports.createDateString = createDateString;
 exports.createHTime = createHTime;
+exports.createRunner = createRunner;
 exports.format = format;
 exports.fromDaysToMilliseconds = fromDaysToMilliseconds;
 exports.fromHoursToMilliseconds = fromHoursToMilliseconds;

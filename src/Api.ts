@@ -12,11 +12,12 @@ import {
 } from './Core/Conversion';
 import { isUtcIsoDateString, isHTimeDateString, createDateString, breakdownDateString } from './Core/Parse';
 import { createClock } from './Util/Clock';
-import { isBefore, isPast, isAfter, isFuture, isSame } from './Util/Comparison';
+import { createRunner } from './Util/Runner';
 import {
   addMilliseconds, addSeconds, addMinutes, addHours, addDays, addWeeks,
   subMilliseconds, subSeconds, subMinutes, subHours, subDays, subWeeks
 } from './Util/Operation';
+import { isBefore, isPast, isAfter, isFuture, isSame } from './Util/Comparison';
 import { format } from './Util/Format';
 
 export type HTime = HTimeType;
@@ -42,6 +43,7 @@ export {
   breakdownDateString,
 
   createClock,
+  createRunner,
   addMilliseconds,
   addSeconds,
   addMinutes,

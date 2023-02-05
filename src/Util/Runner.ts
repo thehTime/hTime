@@ -1,7 +1,9 @@
 import { createHTime, HTime } from '../Core/HTime';
 import { addMilliseconds } from './Operation';
 
-export function createRunner(hTime: HTime = createHTime()): () => HTime {
+export type Runner = () => HTime;
+
+export function createRunner(hTime: HTime = createHTime()): Runner {
   const millisecondsWhenCreated = Date.now();
 
   function getMillisecondsDelta(): number {

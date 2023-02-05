@@ -12,7 +12,7 @@ import {
 } from './Core/Conversion';
 import { isUtcIsoDateString, isHTimeDateString, createDateString, breakdownDateString } from './Core/Parse';
 import { createClock } from './Util/Clock';
-import { createRunner } from './Util/Runner';
+import { Runner as RunnerType, createRunner } from './Util/Runner';
 import {
   addMilliseconds, addSeconds, addMinutes, addHours, addDays, addWeeks,
   subMilliseconds, subSeconds, subMinutes, subHours, subDays, subWeeks
@@ -22,6 +22,7 @@ import { format } from './Util/Format';
 
 export type HTime = HTimeType;
 export type GlobalHour = GlobalHourType;
+export type Runner = RunnerType;
 
 export {
   Constant,

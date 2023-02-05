@@ -17,7 +17,7 @@ const REGEX_DATE_UTC_ISO = /^([1-9][0-9]{0,3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12
  */
 const REGEX_DATE_HTIME = /^([1-9][0-9]{0,3})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T[abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ]:([0-5][0-9])(:([0-5][0-9])(\.[0-9]+)?)?H$/
 
-const REGEX_BREAKDOWN = /(\d+)|(?<=T)\w/gi;
+const REGEX_BREAKDOWN = /(\d+)|T[a-zA-Z]{1}/gi;
 
 function padNumber(number: string | number | undefined, length: number): string {
   return `${number || 0}`.padStart(length, '0');
@@ -53,7 +53,8 @@ export function createDateString(
 
 export function breakdownDateString(dateString: string): DateStringParts {
   const type = dateString.charAt(dateString.length - 1) as DateStringType;
-  const [year, month, day, hour, minute, second, millisecond] = dateString.match(REGEX_BREAKDOWN) as string[];
+  const [year, month, day, tHour, minute, second, millisecond] = dateString.match(REGEX_BREAKDOWN) as string[];
+  const hour = tHour.replace('T', '');
 
   return [type, year, month, day, hour, minute, second, millisecond];
 }

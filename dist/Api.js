@@ -361,7 +361,7 @@ var FORMAT_HTIME_REGEX = /F{1}/g;
 var FORMAT_ESCAPE_CHAR = "'";
 function getDateFromHTime(hTime, useLocal) {
     var date = useLocal ? hTime.local : hTime.utc;
-    return new Date(date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
+    return new Date(date.year, date.month - 1, date.day, date.hour, date.minute, date.second, date.millisecond);
 }
 function replaceHTimePatternIfNotEscaped(hour) {
     return function (fragment, index) {

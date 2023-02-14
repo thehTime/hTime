@@ -12,7 +12,7 @@ const FORMAT_ESCAPE_CHAR = "'";
 
 function getDateFromHTime(hTime: HTime, useLocal?: boolean): Date {
   const date = useLocal ? hTime.local : hTime.utc;
-  return new Date(date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
+  return new Date(date.year, date.month - 1, date.day, date.hour, date.minute, date.second, date.millisecond);
 }
 
 function replaceHTimePatternIfNotEscaped(hour: GlobalHour) {
